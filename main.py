@@ -34,31 +34,26 @@ dic = {} # result dictionary
 def logistic_regression(): 
     lr = LogisticRegression(random_state = seed)
     lr.fit(x_train_2, y_train_2)
-
     return accuracy_score(y_val, lr.predict(x_val))
     
 def knn():
     knn = KNeighborsClassifier(n_neighbors = 7)
     knn.fit(x_train_2, y_train_2)
-
     return accuracy_score(y_val, knn.predict(x_val))
 
 def decision_tree(): 
     tree = DecisionTreeClassifier(max_depth = 4, random_state = seed)
     tree.fit(x_train_2, y_train_2)
-
     return accuracy_score(y_val, tree.predict(x_val))
 
 def random_forest():
     rf = RandomForestClassifier(
         n_estimators= 100, random_state = seed)
     rf.fit(x_train_2, y_train_2)
-
     return accuracy_score(y_val, rf.predict(x_val))
 
 def linear_support_vector_machine():
     svc = LinearSVC()
-
     svc.fit(x_train_2, y_train_2)
     return accuracy_score(y_val, svc.predict(x_val))
 
