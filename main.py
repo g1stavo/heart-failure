@@ -15,47 +15,47 @@ seed = 666
 data = pd.read_csv('heart_failure.csv')
 print(data.head())
 
-x = data.iloc[:, 0:-1].values # features: from first to next-to-last column
+X = data.iloc[:, 0:-1].values # features: from first to next-to-last column
 y = data.iloc[:, -1].values # label: last column
 
-x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size = 1/3, random_state = seed)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size = 1/3, random_state = seed)
 
-x_train_2, x_val, y_train_2, y_val = train_test_split(
-    x_train, y_train, test_size = 1/3, random_state = seed)
+X_train_2, X_val, y_train_2, y_val = train_test_split(
+    X_train, y_train, test_size = 1/3, random_state = seed)
 
 # feature scaling
 scaler = MinMaxScaler()
-x_train_2 = scaler.fit_transform(x_train_2)
-x_val = scaler.transform(x_val)
+X_train_2 = scaler.fit_transform(X_train_2)
+X_val = scaler.transform(X_val)
 
 dic = {} # result dictionary
 
 def logistic_regression(): 
     lr = LogisticRegression(random_state = seed)
-    lr.fit(x_train_2, y_train_2)
-    return accuracy_score(y_val, lr.predict(x_val))
+    lr.fit(X_train_2, y_train_2)
+    return accuracy_score(y_val, lr.predict(X_val))
     
 def knn():
     knn = KNeighborsClassifier(n_neighbors = 7)
-    knn.fit(x_train_2, y_train_2)
-    return accuracy_score(y_val, knn.predict(x_val))
+    knn.fit(X_train_2, y_train_2)
+    return accuracy_score(y_val, knn.predict(X_val))
 
 def decision_tree(): 
     tree = DecisionTreeClassifier(max_depth = 4, random_state = seed)
-    tree.fit(x_train_2, y_train_2)
-    return accuracy_score(y_val, tree.predict(x_val))
+    tree.fit(X_train_2, y_train_2)
+    return accuracy_score(y_val, tree.predict(X_val))
 
 def random_forest():
     rf = RandomForestClassifier(
         n_estimators= 100, random_state = seed)
-    rf.fit(x_train_2, y_train_2)
-    return accuracy_score(y_val, rf.predict(x_val))
+    rf.fit(X_train_2, y_train_2)
+    return accuracy_score(y_val, rf.predict(X_val))
 
 def linear_support_vector_machine():
     svc = LinearSVC()
-    svc.fit(x_train_2, y_train_2)
-    return accuracy_score(y_val, svc.predict(x_val))
+    svc.fit(X_train_2, y_train_2)
+    return accuracy_score(y_val, svc.predict(X_val))
 
 # evaluating models
 dic["logistic_regression"] = logistic_regression()
@@ -68,12 +68,12 @@ validation = pd.Series(dic, name="algorithms accuracy")
 print() ; print(validation)
 
 # train final model
-x_train = scaler.fit_transform(x_train)
-x_test = scaler.transform(x_test)  
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)  
 
 rf = RandomForestClassifier(
     n_estimators= 100, random_state = seed)
-rf.fit(x_train, y_train)
+rf.fit(X_train, y_train)
 
-score = str(accuracy_score(y_test, rf.predict(x_test)))
+score = str(accuracy_score(y_test, rf.predict(X_test)))
 print() ; print("final accuracy: ", score)
