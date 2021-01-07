@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import accuracy_score
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.svm import LinearSVC
+from sklearn.tree import DecisionTreeClassifier
+from utils import println
 
 seed = 666
 
 data = pd.read_csv('heart_failure.csv')
-print(data.head())
+println(data.head())
 
 X = data.iloc[:, 0:-1].values # features: from first to next-to-last column
 y = data.iloc[:, -1].values # label: last column
@@ -65,7 +66,7 @@ dic["random_forest"] = random_forest()
 dic["svc"] = linear_support_vector_machine()
 
 validation = pd.Series(dic, name="algorithms accuracy")
-print() ; print(validation)
+println(validation)
 
 # train final model
 X_train = scaler.fit_transform(X_train)
@@ -76,4 +77,4 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 
 score = str(accuracy_score(y_test, rf.predict(X_test)))
-print() ; print("final accuracy: ", score)
+print("final accuracy:", score)
